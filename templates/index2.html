@@ -33,7 +33,7 @@
                                     <!-- HEADER -->
                                     <div class="page-title m-b">
                                         <h1 class="inline m-5"> <span class="text-danger">Flask</span> Radio <span class="bi bi-music-player mx-2" style=""></span></h1>
-                                      <form id='idf'  action="/2" method="post" >
+                                      <form id='idf'  action="/" method="post" >
                                         <div class="search_radio my-3">
                                             <span class="fa fa-search" @click="document.getElementById('idf').submit();"></span>
                                             <input type="text" name='search' class="search-input" v-model="search" @keyup.enter="getRadios" placeholder="Search">
@@ -44,26 +44,26 @@
                                         <div class="row">
                                             <!-- RADIO LIST -->
 											{% for index,radio in res %}
-                                            <div class="col-xs-4 col-sm-4 col-md-3 my-3" :class="`${playingIndex == index? 'shadow p-3':''}`" v-for="(radio, index) in radios" v-if="radios" :style="`${playingIndex == index? 'border:5px solid white; border-radius: 10px; transition: 1s ease all' : 'border:none; transition: 1s ease all'}`">
-                                                <div class="card bg-transparent" :style="{ 'background-image': 'url(' + `${radio.favicon ? radio.favicon:noImage}` + ')' }" style="background-size: cover; height: 20em;">
+                                            <div class="col-xs-4 col-sm-4 col-md-3 my-3" :class="`${playingIndex == {{index}}? 'shadow p-3':''}`" v-for="({{radio}}, {{index}}) in radios" v-if="radios" :style="`${playingIndex == index? 'border:5px solid white; border-radius: 10px; transition: 1s ease all' : 'border:none; transition: 1s ease all'}`">
+                                                <div class="card bg-transparent" :style="{ 'background-image': 'url(' + `${{{radio.favicon}} ? {{radio.favicon}}:noImage}` + ')' }" style="background-size: cover; height: 20em;">
                                                     <div class="card-body">
                                                         <div class="d-flex justify-content-center align-items-center h-100">
-                                                            <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio(index, radio,$event)" v-if="playingIndex != index" >
+                                                            <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio({{index}}, {{radio}},$event)" v-if="playingIndex != {{index}}" >
                                                                 <i class="bi bi-play fs-3 text-center"></i>
                                                             </button>
-                                                             <a class="btn-playpause text-primary" @click="playRadio(index, radio,$event)" v-if="playingIndex != index">
+                                                             <a class="btn-playpause text-primary" @click="playRadio({{index}}, {{radio}},$event)" v-if="playingIndex != index">
                                                                 <i class="bi bi-play-circle text-primary"></i>
                                                             </a> 
-                                                            <p class="bg-dark rounded-pill text-white w-100 text-center p-3" v-if="playingIndex == index">Now Playing</p> 
+                                                            <p class="bg-dark rounded-pill text-white w-100 text-center p-3" v-if="playingIndex == {{index}}">Now Playing</p> 
                                                         </div>
                                                        
                                                     </div>
                                                     <div class="card-footer text-center" style="background-color:  #343a4083 ;">
                                                         <div class="text-white">
-                                                            <a :href="radio.homepage" v-text="radio.name" class="text-white text-decoration-none fs-5"></a>
+                                                            <a :href="{{radio.homepage}}" v-text="{{radio.name}}" class="text-white text-decoration-none fs-5"></a>
                                                         </div>
                                                         <div class="">
-                                                            <p href="" v-text="`${radio.tags}`" class="text-muted"></p> 
+                                                            <p href="" v-text="`${{{radio.tags}}}`" class="text-muted"></p> 
                                                         </div>
                                                     </div>
                                                   
