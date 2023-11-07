@@ -27,7 +27,7 @@ def get_radio_api():
 @app.route('/', methods=['POST','GET'])
 
 def home():
-    radio_res = None
+    radio_res = []
     if request.method == 'POST':
         search = request.form.get('search')
         if search:
