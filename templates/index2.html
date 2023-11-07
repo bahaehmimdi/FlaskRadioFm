@@ -28,21 +28,25 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Add shadow effect */
     text-align: center; /* Center the card content */
   }
-		      .card-body {
-      position: relative; /* Necessary for absolute positioning of the hidden content */
+   .card-body {
+      position: relative;
+      width: 200px; /* Set a specific width for the card-body for demonstration purposes */
+      height: 100px; /* Set a specific height for the card-body for demonstration purposes */
     }
 
     .hidden-content {
-      visibility: hidden; /* Initially hide the content */
+      visibility: hidden;
       position: absolute;
-      top:-150%;
-      background-color: #fff; /* You can customize the background color */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Center the content both horizontally and vertically */
+      background-color: #fff;
       padding: 10px;
       border: 1px solid #ccc;
     }
 
     .card-body:hover .hidden-content {
-      visibility: visible; /* Show the content when hovering over the card-body */
+      visibility: visible;
     }
 </style>
     </head>
