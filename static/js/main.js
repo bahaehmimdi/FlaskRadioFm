@@ -1,4 +1,4 @@
-var BASE_URL = "//localhost:5000"
+var BASE_URL = "https://radiotogo.onrender.com/"
             var vue = new Vue({
                 el: '#app',
                 delimiters: ["[[","]]"],
