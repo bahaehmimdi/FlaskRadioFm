@@ -10,7 +10,13 @@ def radio_search(search):
     if search:
         radio = rb.search(name=search, name_exact = False)
         return radio
-
+    else:
+        return {} 
+        
+@app.route('/radio/<radioname>')
+def show_user_profile(radioname):
+    return jsonify(radio_search(radioname))
+    
 @app.route('/api',methods=['POST','GET'])
 def get_radio_api():
     if request.method == "POST":
