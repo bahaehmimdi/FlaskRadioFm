@@ -32,7 +32,7 @@
                                     <!-- HEADER -->
                                     <div class="page-title m-b">
                                         <h1 class="inline m-5"> <span class="text-danger">Flask</span> Radio <span class="bi bi-music-player mx-2" style=""></span></h1>
-                                      <form id='idf'  action="/api" method="post" >
+                                      <form id='idf'  action="/" method="post" >
                                         <div class="search_radio my-3">
                                             <span class="fa fa-search" @click="document.getElementById('idf').submit();"></span>
                                             <input type="text" class="search-input" v-model="search" @keyup.enter="getRadios" placeholder="Search">
