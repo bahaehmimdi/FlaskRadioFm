@@ -34,8 +34,9 @@ def home():
             radio_res = radio_search(search)
             
     return render_template('index2.html', res = list(enumerate([
-    {**station, 'favicon': station.get('favicon', 'https://placehold.co/600x400?text='+station.get('name'))}
+    {**station, 'favicon': station.get('favicon', 'https://placehold.co/600x400?text=' + station.get('name'))}
     for station in radio_res
+    if station.get('favicon') is None or station.get('favicon') == ""
 ])))
 @app.route('/', methods=['POST','GET'])
 
@@ -47,8 +48,9 @@ def home2():
             radio_res = radio_search(search)
             
     return render_template('index.html', res = [
-    {**station, 'favicon': station.get('favicon', 'https://placehold.co/600x400?text='+station.get('name'))}
+    {**station, 'favicon': station.get('favicon', 'https://placehold.co/600x400?text=' + station.get('name'))}
     for station in radio_res
+    if station.get('favicon') is None or station.get('favicon') == ""
 ])
 if __name__ == '__main__':
     app.run(debug=True)
