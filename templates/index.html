@@ -4,6 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        li {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            flex: 1;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            margin: 10px 0;
+        }
+        img {
+            max-width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        audio {
+            width: 100%;
+        }
+    </style>
     <title>Radio Stations Info</title>
 </head>
 <body>
@@ -16,9 +54,9 @@
     </form>
     <ul>
         {% for station in res %}
-            <li>
-                <h2>{{ station['name'] }}</h2>
-                <p><a href="{{ station['homepage'] }}" target="_blank">Visit {{ station['name'] }} Homepage</a></p>
+            <li style="background-color: {{ station['background_color'] }};">
+                <h2 style="color: {{ station['text_color'] }};">{{ station['name'] }}</h2>
+                <p><a href="{{ station['homepage'] }}" target="_blank" style="color: #0070cc;">Visit {{ station['name'] }} Homepage</a></p>
                 <img src="{{ station['favicon'] }}" alt="{{ station['name'] }} Logo">
                 <p>Tags: {{ station['tags'] }}</p>
                 <p>Country: {{ station['country'] }}</p>
@@ -31,19 +69,5 @@
             </li>
         {% endfor %}
     </ul>
-
-    <script>
-        var audioElements = document.querySelectorAll('audio');
-
-        audioElements.forEach(function (audioElement) {
-            audioElement.addEventListener('play', function () {
-                audioElements.forEach(function (element) {
-                    if (element !== audioElement && !element.paused) {
-                        element.pause();
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
