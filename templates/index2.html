@@ -111,6 +111,109 @@
                     <audio src="" hidden id="player" controls></audio>
             </div>
         </div>
+	    <script>
+		    function returnNoImage() {
+  fetch(`https://source.unsplash.com/600x400/?radio`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.url;
+    })
+    .then((url) => {
+      this.noImage = url;
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+    });
+}
+
+// Define the getRadios function
+function getRadios() {
+  if (!this.search) {
+    getMostPlayed();
+    return;
+  }
+
+  fetch(`${BASE_URL}/api`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ search: this.search }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      this.radios = data;
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+    });
+}
+
+// Define the getMostPlayed function
+function getMostPlayed() {
+  axios
+    .get(
+      `https://nl1.api.radio-browser.info/json/stations/search?limit=12&hidebroken=true&has_extended_info=true&order=clickcount&reverse=true`
+    )
+    .then((response) => {
+      this.radios = response.data;
+    });
+}
+
+// Define the pauseRadio function
+function pauseRadio() {
+  if (this.playing) {
+    this.playing = false;
+    document.getElementById('player').pause();
+  } else {
+    this.playing = true;
+    document.getElementById('player').play();
+  }
+}
+
+// Define the playRadio function
+function playRadio(index, radiou, radiof, radion, event) {
+  var audio = document.getElementById('player');
+  var vol = document.getElementById('formControlRange');
+  audio.src = '';
+  audio.src = radiou;
+  this.playing = true;
+  audio.volume = vol.value / 100;
+
+  audio.play();
+  this.currentRadioImage = radiof;
+  this.currentRadioName = radion;
+  this.playingIndex = index;
+  document.title = `FlaskRadio | ${this.currentRadioName}`;
+}
+
+// Define the changeVolume function
+function changeVolume() {
+  let audio = document.getElementById('player');
+  audio.volume = this.volume / 100;
+}
+
+// Define the muteVolume function
+function muteVolume() {
+  let audio = document.getElementById('player');
+
+  if (this.volume > 0) {
+    this.lastVolume = this.volume;
+    this.volume = 0;
+    audio.volume = this.volume / 100;
+  } else {
+    this.volume = this.lastVolume;
+    audio.volume = this.volume / 100;
+  }
+}
+	    </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.22.0/axios.min.js" integrity="sha512-m2ssMAtdCEYGWXQ8hXVG4Q39uKYtbfaJL5QMTbhl2kc6vYyubrKHhr6aLLXW4ITeXSywQLn1AhsAaqrJl8Acfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
