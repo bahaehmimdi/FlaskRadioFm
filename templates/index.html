@@ -35,7 +35,7 @@
                                       <form id='idf'  action="/" method="post" >
                                         <div class="search_radio my-3">
                                             <span class="fa fa-search" @click="document.getElementById('idf').submit();"></span>
-                                            <input type="text" class="search-input" v-model="search" @keyup.enter="getRadios" placeholder="Search">
+                                            <input type="text" name='search' class="search-input" v-model="search" @keyup.enter="getRadios" placeholder="Search">
                                         </div> </form>
                                     </div>
                                     <!-- END HEADER -->
