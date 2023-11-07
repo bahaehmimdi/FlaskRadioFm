@@ -20,6 +20,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" >
+	    <style>
+  .radio-card {
+    width: 70%;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Add shadow effect */
+    text-align: center; /* Center the card content */
+  }
+</style>
     </head>
     <body style="background-color: #13192c;">
         
@@ -43,29 +51,24 @@
 									
                                         <div class="row">
                                             <!-- RADIO LIST -->
-											{% for index,radio in res %}
-					<h10>{{radio.name}}</h10>	
-                     <div class="col-md-3">
-                        <div class="card">
-{% if radio.favicon %}
+											{% for index, radio in res %}
+<div class="col-md-3">
+  <div class="card radio-card">
+    {% if radio.favicon %}
     <img src="{{ radio.favicon }}" class="card-img-top" alt="Station Image" width="200" height="200">
-{% else %}
+    {% else %}
     <img src="https://placehold.co/200x200" class="card-img-top" alt="Placeholder Image" width="200" height="200">
-{% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ radio.name }}</h5>
-                                <p class="card-text">{{ radio.tags }}</p>
-                                <a href="{{ radio.homepage }}" class="btn btn-primary">Visit Homepage</a>
-                                
-                                <!-- Add a "Play" button for each radio station with data attributes -->
-                                <button class="btn btn-success play-button" 
-                                    onclick="playRadio({{index}}, '{{radio.url_resolved}}', '{{radio.favicon}}' ,'{{radio.name}}',event)"
-                                >Play</button>
-                            </div>
-                        </div>
-                    </div>
-											
-											  {% endfor %}
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ radio.name }}</h5>
+      <p class="card-text">{{ radio.tags }}</p>
+      <a href="{{ radio.homepage }}" class="btn btn-primary">Visit Homepage</a>
+      <!-- Add a "Play" button for each radio station with data attributes -->
+      <button class="btn btn-success play-button" onclick="playRadio({{index}}, '{{radio.url_resolved}}', '{{radio.favicon}}', '{{radio.name}}', event)">Play</button>
+    </div>
+  </div>
+</div>
+{% endfor %}
                                         </div>
                                         <div class="text-center">
                                              <a href="" class="btn btn-sm rounded bg-light" @click.prevent="getRadios()">Show More</a> 
