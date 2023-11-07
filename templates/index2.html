@@ -81,15 +81,16 @@
     {% endif %}
     <div class="card-body">
     <div class="hidden-content">	    
-      
-      
+      <p >{{ radio.tags }}</p>
+            <p >{{ radio.name }}</p>
+
       <a href="{{ radio.homepage }}" class="btn btn-primary">Visit Homepage</a>
       <!-- Add a "Play" button for each radio station with data attributes -->
       <button class="btn btn-success play-button" onclick="playRadio({{index}}, '{{radio.url_resolved}}', '{{radio.favicon}}', '{{radio.name}}', event)">Play</button>
       </div>
   </div>
   </div>
-<h20 >{{ radio.tags }}</h20>	
+	
 </div>
 {% endfor %}
                                         </div>
