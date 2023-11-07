@@ -45,32 +45,22 @@
                                             <!-- RADIO LIST -->
 											{% for index,radio in res %}
 					<h10>{{radio.name}}</h10>	
-                                            <div class="col-xs-4 col-sm-4 col-md-3 my-3" :class="`${playingIndex == {{index}}? 'shadow p-3':''}`" v-for="({{radio}}, {{index}}) in radios" v-if="radios" :style="`${playingIndex == index? 'border:5px solid white; border-radius: 10px; transition: 1s ease all' : 'border:none; transition: 1s ease all'}`">
-<div class="card bg-transparent" :style="{ 'background-image': url('{{ radio.favicon or noImage }}') }" style="background-size: cover; height: 20em;">
-                                                    <div class="card-body">
-                                                        <div class="d-flex justify-content-center align-items-center h-100">
-                                                            <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio({{index}}, {{radio.url_resolved}}, {{radio.favicon}} ,{{radio.name}},$event)" v-if="playingIndex != {{index}}" >
-                                                                <i class="bi bi-play fs-3 text-center"></i>
-                                                            </button>
-                                                             <a class="btn-playpause text-primary" @click="playRadio({{index}}, {{radio}},$event)" v-if="playingIndex != index">
-                                                                <i class="bi bi-play-circle text-primary"></i>
-                                                            </a> 
-                                                            <p class="bg-dark rounded-pill text-white w-100 text-center p-3" v-if="playingIndex == {{index}}">Now Playing</p> 
-                                                        </div>
-                                                       
-                                                    </div>
-                                                    <div class="card-footer text-center" style="background-color:  #343a4083 ;">
-                                                        <div class="text-white">
-                                                            <a :href="{{radio.homepage}}" v-text="{{radio.name}}" class="text-white text-decoration-none fs-5"></a>
-                                                        </div>
-                                                        <div class="">
-                                                           <p href="" v-text="`{{ radio.tags }}`" class="text-muted"></p>
-
-                                                        </div>
-                                                    </div>
-                                                  
-                                                </div>
-                                            </div>
+                     <div class="col-md-3">
+                        <div class="card">
+                            <img src="{{ url_for('static', filename=radio.favicon) }}" class="card-img-top" alt="Station Image">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ radio.name }}</h5>
+                                <p class="card-text">{{ radio.tags }}</p>
+                                <a href="{{ radio.homepage }}" class="btn btn-primary">Visit Homepage</a>
+                                
+                                <!-- Add a "Play" button for each radio station with data attributes -->
+                                <button class="btn btn-success play-button" 
+                                    onclick="playRadio({{index}}, {{radio.url_resolved}}, {{radio.favicon}} ,{{radio.name}},$event)"
+                                >Play</button>
+                            </div>
+                        </div>
+                    </div>
+											
 											  {% endfor %}
                                         </div>
                                         <div class="text-center">
