@@ -41,13 +41,31 @@
         audio {
             width: 100%;
         }
+         .search-card {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            margin: 0 auto;
+            max-width: 400px; /* Adjust the width as needed */
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
     </style>
     <title>Radio Stations Info</title>
 </head>
 <body>
     <h1>Radio Stations</h1>
     <form id="idf" action="/" method="post">
-        <div class="search_radio my-3">
+        <!-- Updated search card with centered input -->
+        <div class="search-card">
             <span class="fa fa-search" @click="document.getElementById('idf').submit();"></span>
             <input type="text" name="search" class="search-input" v-model="search" @keyup.enter="getRadios" placeholder="Search">
         </div>
@@ -57,7 +75,8 @@
             <li style="background-color: {{ station['background_color'] }};">
                 <h2 style="color: {{ station['text_color'] }};">{{ station['name'] }}</h2>
                 <p><a href="{{ station['homepage'] }}" target="_blank" style="color: #0070cc;">Visit {{ station['name'] }} Homepage</a></p>
-                <img src="{{ station['favicon'] }}" alt="{{ station['name'] }} Logo">
+                <!-- Set a fixed size for images (e.g., 200x200 pixels) and use a placeholder if the image doesn't exist -->
+                <img src="{{ station['favicon'] | default('https://placehold.co/200x200') }}" alt="{{ station['name'] }} Logo" style="max-width: 200px; max-height: 200px;">
                 <p>Tags: {{ station['tags'] }}</p>
                 <p>Country: {{ station['country'] }}</p>
                 <p>Language: {{ station['language'] }}</p>
