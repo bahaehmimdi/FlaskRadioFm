@@ -24,7 +24,7 @@ def get_radio_api():
         radio = radio_search(data['search'])
         return jsonify(radio)
 
-@app.route('/', methods=['POST','GET'])
+@app.route('/2', methods=['POST','GET'])
 
 def home():
     radio_res = []
@@ -33,8 +33,8 @@ def home():
         if search:
             radio_res = radio_search(search)
             
-    return render_template('index.html', res = radio_res)
-@app.route('/2', methods=['POST','GET'])
+    return render_template('index2.html', res = radio_res)
+@app.route('/', methods=['POST','GET'])
 
 def home2():
     radio_res = []
@@ -43,6 +43,6 @@ def home2():
         if search:
             radio_res = radio_search(search)
             
-    return render_template('index2.html', res = radio_res)
+    return render_template('index.html', res = radio_res)
 if __name__ == '__main__':
     app.run(debug=True)
