@@ -103,11 +103,12 @@
                     </div>
                 <!-- FOOTER -->
                 <div class="footer fixed-bottom d-flex align-items-center justify-content-between bg-dark" v-if="radios.length > 0" style="min-height:3em" >
-                    <div class="d-flex justify-content-center align-items-center ">
+            
+			<div class="d-flex justify-content-center align-items-center ">
                         <img :src="currentRadioImage" v-if="currentRadioImage" alt="" style="width: 3em;height: 3em; margin: 0px; padding: 0px;filter: blur(1px) grayscale(0.5);" >
                         <a href="" @click.prevent="pauseRadio" class="position-absolute ">
-                            <i class="bi bi-play-circle fs-4 rounded-circle text-white" v-if="!playing"></i>
-                            <i class="bi bi-pause-circle fs-4 rounded-circle text-white " v-else></i>  
+                            <i class="bi bi-play-circle fs-4 rounded-circle text-white" style="height:20px;width:20px"  v-if="!playing"></i>
+                            <i class="bi bi-pause-circle fs-4 rounded-circle text-white " style="height:20px;width:20px" v-else></i>  
                         </a>
                     </div>
                     <div class="playlist justify-content-center" style="padding: 0;">
