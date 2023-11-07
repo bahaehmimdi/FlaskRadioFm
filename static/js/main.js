@@ -67,11 +67,11 @@ var BASE_URL = "https://radiotogo.onrender.com/"
                         
                     
                     },
-                    playRadio(index, radio, event){
+                    playRadio(index, radiou,radiof,radion, event){
                         var audio = document.getElementById('player');
                         var vol = document.getElementById("formControlRange")
                         audio.src = ""
-                        audio.src = radio.url_resolved
+                        audio.src = radiou
                         this.playing = true
                         audio.volume = vol.value/100
                         
@@ -79,8 +79,8 @@ var BASE_URL = "https://radiotogo.onrender.com/"
                         //     audio.volume = vol.value/100
                         // })
                         audio.play()
-                        this.currentRadioImage = radio.favicon
-                        this.currentRadioName = radio.name
+                        this.currentRadioImage = radiof
+                        this.currentRadioName =radion
                         this.playingIndex = index
                         document.title = `FlaskRadio | ${this.currentRadioName}`
                         // console.log(event.target.parentNode.parentNode.parentNode.parentNode)
