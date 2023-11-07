@@ -28,12 +28,26 @@ var BASE_URL = "https://radiotogo.onrender.com/"
                             this.getMostPlayed()
                             return
                         }
-                        axios.post(`${BASE_URL}/api`, {
-                            "search": this.search
-                        }).then(response =>{
-                            this.radios = response.data
-                            
-                        })
+                      fetch(`${BASE_URL}/api`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json', // Set the content type to JSON
+  },
+  body: JSON.stringify({ search: this.search }), // Convert the data to JSON
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the response as JSON
+  })
+  .then(data => {
+    this.radios = data; // Update your component's state with the response data
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+
                     },
                     getMostPlayed(){
                         axios.get(`https://nl1.api.radio-browser.info/json/stations/search?limit=12&hidebroken=true&has_extended_info=true&order=clickcount&reverse=true`)
