@@ -33,7 +33,7 @@ def home():
         if search:
             radio_res = radio_search(search)
             
-    return render_template('index.html', res = list(enumerate(radio_res)))
+    return render_template('index.html', res = radio_res)
 
 if __name__ == '__main__':
     app.run(debug=True)
