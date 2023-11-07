@@ -76,7 +76,7 @@
                 <h2 style="color: {{ station['text_color'] }};">{{ station['name'] }}</h2>
                 <p><a href="{{ station['homepage'] }}" target="_blank" style="color: #0070cc;">Visit {{ station['name'] }} Homepage</a></p>
                 <!-- Set a fixed size for images (e.g., 200x200 pixels) and use a placeholder if the image doesn't exist -->
-                <img src="{{ station['favicon'] | default('https://placehold.co/200x200') }}" alt="{{ station['name'] }} Logo" style="max-width: 200px; max-height: 200px;">
+                <img src="{{ station['favicon']  }}" alt="{{ station['name'] }} Logo" style="max-width: 200px; max-height: 200px;">
                 <p>Tags: {{ station['tags'] }}</p>
                 <p>Country: {{ station['country'] }}</p>
                 <p>Language: {{ station['language'] }}</p>
