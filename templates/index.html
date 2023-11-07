@@ -81,10 +81,7 @@
                 <p>Country: {{ station['country'] }}</p>
                 <p>Language: {{ station['language'] }}</p>
                 <p>Votes: {{ station['votes'] }}</p>
-                <audio id="{{ station['name'].replace(' ', '_') }}" controls>
-                    <source src="{{ station['url'] }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+              
             </li>
         {% endfor %}
     </ul>
