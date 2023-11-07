@@ -33,7 +33,7 @@ def home():
         if search:
             radio_res = radio_search(search)
             
-    return render_template('index2.html', res = radio_res)
+    return render_template('index2.html', res = list(enumerate(radio_res)))
 @app.route('/', methods=['POST','GET'])
 
 def home2():
