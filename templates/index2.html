@@ -49,7 +49,7 @@
 <div class="card bg-transparent" :style="{ 'background-image': 'url({{ radio.favicon or noImage }})' }" style="background-size: cover; height: 20em;">
                                                     <div class="card-body">
                                                         <div class="d-flex justify-content-center align-items-center h-100">
-                                                            <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio({{index}}, {{radio}},$event)" v-if="playingIndex != {{index}}" >
+                                                            <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio({{index}}, {{radio.url_resolved}}, {{radio.favicon}} ,{{radio.name}},$event)" v-if="playingIndex != {{index}}" >
                                                                 <i class="bi bi-play fs-3 text-center"></i>
                                                             </button>
                                                              <a class="btn-playpause text-primary" @click="playRadio({{index}}, {{radio}},$event)" v-if="playingIndex != index">
