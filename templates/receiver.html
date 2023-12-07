@@ -5,26 +5,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receive Call</title>
+    <title>Audio Stream Receiver</title>
 </head>
 <body>
-    <h1>Receive Call Page</h1>
-    <div id="callStatus"></div>
+    <h1>Audio Stream Receiver</h1>
+    <audio controls id="audioPlayer"></audio>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
         var socket = io.connect('https://caller-wqt3.onrender.com/');
+        var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        var audioPlayer = document.getElementById('audioPlayer');
 
-        socket.on('incoming_call', (message) => {
-            document.getElementById('callStatus').innerHTML = message;
-        });
+        socket.on('audio_data', function(audioData) {
+            if (!audioData) {
+                // Stop streaming signal received
+                audioPlayer.src = '';
+                return;
+            }
 
-        socket.on('connect', () => {
-            console.log('Connected to WebSocket server');
-        });
-
-        socket.on('disconnect', () => {
-            console.log('Disconnected from WebSocket server');
+            var audioBuffer = audioContext.createBuffer(1, audioData.length, audioContext.sampleRate);
+            var channelData = audioBuffer.getChannelData(0);
+            channelData.set(audioData);
+            
+            var source = audioContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(audioContext.destination);
+            source.start();
         });
     </script>
 </body>
