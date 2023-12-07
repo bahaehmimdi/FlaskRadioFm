@@ -13,26 +13,28 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(function (stream) {
-                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                var source = audioContext.createMediaStreamSource(stream);
-                var scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
+        async function initAudio() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioContext.createMediaStreamSource(stream);
 
-                scriptNode.onaudioprocess = function (audioEvent) {
-                    var inputBuffer = audioEvent.inputBuffer;
-                    var audioData = inputBuffer.getChannelData(0);
-                    socket.emit('audio_data', audioData);
-                };
+            await audioContext.audioWorklet.addModule('/static/audio-worklet.js');
+            const workletNode = new AudioWorkletNode(audioContext, 'audio-worklet-processor');
 
-                source.connect(scriptNode);
-                scriptNode.connect(audioContext.destination);
-            })
-            .catch(function (err) {
-                console.log('Error: ' + err);
-            });
+            source.connect(workletNode).connect(audioContext.destination);
+        }
+
+        initAudio().catch((err) => console.error('Error initializing audio:', err));
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
     </script>
 </body>
 </html>
