@@ -9,13 +9,12 @@ socketio = SocketIO(app)
 def index():
     return render_template('index.html')
 
-@app.route('/page1')
-def page1():
-    return render_template('page1.html')
+@app.route('/receiver')
+def receiver():
+    return render_template('receiver.html')
 
 @socketio.on('audio_data')
 def handle_audio(audio_data):
-    # Broadcast the received audio data to all connected clients
     socketio.emit('audio_data', audio_data, broadcast=True)
 
 if __name__ == '__main__':
