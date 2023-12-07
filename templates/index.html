@@ -13,7 +13,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var socket = io.connect('https://' + document.domain + ':' + location.port);
 
         async function initAudio() {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
