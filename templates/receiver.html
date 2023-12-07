@@ -13,7 +13,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
-        var socket = io.connect('http://127.0.0.1:5000');
+        var socket = io.connect('https://caller-wqt3.onrender.com/');
 
         socket.on('incoming_call', (message) => {
             document.getElementById('callStatus').innerHTML = message;
