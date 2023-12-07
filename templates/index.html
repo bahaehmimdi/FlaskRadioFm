@@ -5,35 +5,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Audio Streaming</title>
+    <title>Start Call</title>
 </head>
 <body>
-    <h1>Home Page</h1>
-    <a href="{{ url_for('page1') }}">Go to Page 1</a>
+    <h1>Start Call Page</h1>
+    <button onclick="startCall()">Start Call</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
+        var socket = io.connect('https://caller-wqt3.onrender.com/');
 
-        async function initAudio() {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioContext.createMediaStreamSource(stream);
-
-            await audioContext.audioWorklet.addModule('/static/audio-worklet.js');
-            const workletNode = new AudioWorkletNode(audioContext, 'audio-worklet-processor');
-
-            source.connect(workletNode).connect(audioContext.destination);
+        function startCall() {
+            socket.emit('start_call');
         }
 
-        initAudio().catch((err) => console.error('Error initializing audio:', err));
-
         socket.on('connect', () => {
-            console.log('Connected to server');
+            console.log('Connected to WebSocket server');
         });
 
         socket.on('disconnect', () => {
-            console.log('Disconnected from server');
+            console.log('Disconnected from WebSocket server');
         });
     </script>
 </body>
