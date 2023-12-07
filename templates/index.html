@@ -1,92 +1,38 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        li {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            flex: 1;
-        }
-        h2 {
-            color: #333;
-        }
-        p {
-            margin: 10px 0;
-        }
-        img {
-            max-width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        audio {
-            width: 100%;
-        }
-         .search-card {
-            text-align: center;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            margin: 0 auto;
-            max-width: 400px; /* Adjust the width as needed */
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-    </style>
-    <title>Radio Stations Info</title>
+    <title>Flask Audio Streaming</title>
 </head>
 <body>
-    <h1>Radio Stations</h1>
-    <form id="idf" action="/" method="post">
-        <!-- Updated search card with centered input -->
-        <div class="search-card">
-            <span class="fa fa-search" @click="document.getElementById('idf').submit();"></span>
-            <input type="text" name="search" class="search-input" v-model="search" @keyup.enter="getRadios" placeholder="Search">
-        </div>
-    </form>
-    <ul>
-        {% for station in res %}
-            <li style="background-color: {{ station['background_color'] }};">
-                <h2 style="color: {{ station['text_color'] }};">{{ station['name'] }}</h2>
-                <p><a href="{{ station['homepage'] }}" target="_blank" style="color: #0070cc;">Visit {{ station['name'] }} Homepage</a></p>
-                <!-- Set a fixed size for images (e.g., 200x200 pixels) and use a placeholder if the image doesn't exist -->
-                <img src="{{ station['favicon']  }}" alt="{{ station['name'] }} Logo" style="max-width: 200px; max-height: 200px;">
-                <p>Tags: {{ station['tags'] }}</p>
-                <p>Country: {{ station['country'] }}</p>
-                <p>Language: {{ station['language'] }}</p>
-                <p>Votes: {{ station['votes'] }}</p>
-                <audio id="{{ station['name'].replace(' ', '_') }}" controls>
-                    <source src="{{ station['url'] }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </li>
-        {% endfor %}
-    </ul>
+    <h1>Home Page</h1>
+    <a href="{{ url_for('page1') }}">Go to Page 1</a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                var source = audioContext.createMediaStreamSource(stream);
+                var scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
+
+                scriptNode.onaudioprocess = function (audioEvent) {
+                    var inputBuffer = audioEvent.inputBuffer;
+                    var audioData = inputBuffer.getChannelData(0);
+                    socket.emit('audio_data', audioData);
+                };
+
+                source.connect(scriptNode);
+                scriptNode.connect(audioContext.destination);
+            })
+            .catch(function (err) {
+                console.log('Error: ' + err);
+            });
+    </script>
 </body>
 </html>
