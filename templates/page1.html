@@ -1,0 +1,38 @@
+<!-- templates/page1.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 1</title>
+</head>
+<body>
+    <h1>Page 1</h1>
+    <a href="{{ url_for('index') }}">Go to Home Page</a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                var source = audioContext.createMediaStreamSource(stream);
+                var scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
+
+                scriptNode.onaudioprocess = function (audioEvent) {
+                    var inputBuffer = audioEvent.inputBuffer;
+                    var audioData = inputBuffer.getChannelData(0);
+                    socket.emit('audio_data', audioData);
+                };
+
+                source.connect(scriptNode);
+                scriptNode.connect(audioContext.destination);
+            })
+            .catch(function (err) {
+                console.log('Error: ' + err);
+            });
+    </script>
+</body>
+</html>
