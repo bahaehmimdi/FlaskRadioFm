@@ -1,56 +1,25 @@
-from audioop import reverse
-from pyradios import RadioBrowser
-from flask import Flask, render_template, request, jsonify
-import json
+from flask import Flask, render_template
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
-rb = RadioBrowser()
+socketio = SocketIO(app, cors_allowed_origins="*")
 
-def radio_search(search):
-    if search:
-        radio = rb.search(name=search, name_exact = False)
-        return radio
-    else:
-        return {} 
-        
-@app.route('/radio/<radioname>')
-def show_user_profile(radioname):
-    return jsonify(radio_search(radioname))
-    
-@app.route('/api',methods=['POST','GET'])
-def get_radio_api():
-    if request.method == "POST":
-        data = json.loads(request.data)
-        radio = radio_search(data['search'])
-        return jsonify(radio)
+@app.route('/start_call')
+def start_call():
+    return render_template('start_call.html')
 
-@app.route('/2', methods=['POST','GET'])
+@app.route('/receive_call')
+def receive_call():
+    return render_template('receive_call.html')
 
-def home():
-    radio_res = []
-    if request.method == 'POST':
-        search = request.form.get('search')
-        if search:
-            radio_res = radio_search(search)
-            
-    return render_template('index2.html', res = list(enumerate([
-    {**station, 'favicon': station.get('favicon', 'https://placehold.co/600x400?text=' + station.get('name'))}
-    for station in radio_res
-    if station.get('favicon') is None or station.get('favicon') == ""
-])))
-@app.route('/', methods=['POST','GET'])
+@socketio.on('start_call')
+def handle_start_call(message):
+    socketio.emit('start_call', message)
 
-def home2():
-    radio_res = []
-    if request.method == 'POST':
-        search = request.form.get('search')
-        if search:
-            radio_res = radio_search(search)
-            
-    return render_template('index.html', res = [
-    {**station, 'favicon': station.get('favicon', 'https://placehold.co/600x400?text=' + station.get('name'))}
-    for station in radio_res
-    if station.get('favicon') is None or station.get('favicon') == ""
-])
+@socketio.on('receive_call')
+def handle_receive_call(message):
+    socketio.emit('receive_call', message)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
+
