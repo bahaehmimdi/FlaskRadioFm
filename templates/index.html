@@ -14,45 +14,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
         var socket = io.connect('https://caller-wqt3.onrender.com/');
-        var isStreaming = false;
+         var isStreaming = false;
 
-        document.getElementById('startStreaming').addEventListener('click', function() {
-            if (!isStreaming) {
-                startStreaming();
-            } else {
-                stopStreaming();
-            }
-        });
-
-        function startStreaming() {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(function(stream) {
-                    isStreaming = true;
-                    document.getElementById('startStreaming').innerText = 'Stop Streaming';
-
-                    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    var source = audioContext.createMediaStreamSource(stream);
-                    var scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
-
-                    scriptNode.onaudioprocess = function(audioEvent) {
-                        var inputBuffer = audioEvent.inputBuffer;
-                        var audioData = inputBuffer.getChannelData(0);
-                        socket.emit('audio_data', audioData);
-                    };
-
-                    source.connect(scriptNode);
-                    scriptNode.connect(audioContext.destination);
-                })
-                .catch(function(error) {
-                    console.error('Error accessing microphone:', error);
-                });
+    document.getElementById('startStreaming').addEventListener('click', function() {
+        if (!isStreaming) {
+            startStreaming();
+        } else {
+            stopStreaming();
         }
+    });
 
-        function stopStreaming() {
-            isStreaming = false;
-            document.getElementById('startStreaming').innerText = 'Start Streaming';
-            socket.emit('audio_data', null);  // Signal to stop streaming
-        }
+    function startStreaming() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function(stream) {
+                isStreaming = true;
+                document.getElementById('startStreaming').innerText = 'Stop Streaming';
+
+                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                var source = audioContext.createMediaStreamSource(stream);
+                var scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
+
+                scriptNode.onaudioprocess = function(audioEvent) {
+                    var inputBuffer = audioEvent.inputBuffer;
+                    var audioData = inputBuffer.getChannelData(0);
+                    socket.emit('audio_data', audioData.buffer);
+                };
+
+                source.connect(scriptNode);
+                scriptNode.connect(audioContext.destination);
+            })
+            .catch(function(error) {
+                console.error('Error accessing microphone:', error);
+            });
+    }
+
+    function stopStreaming() {
+        isStreaming = false;
+        document.getElementById('startStreaming').innerText = 'Start Streaming';
+        socket.emit('audio_data', null);  // Signal to stop streaming
+    }
     </script>
 </body>
 </html>
