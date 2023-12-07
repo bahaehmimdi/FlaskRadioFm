@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recevoir un appel</title>
+</head>
+<body>
+    <h1>Recevoir un appel</h1>
+    <div id="callStatus">En attente d'appel...</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        var socket = io.connect('https://caller.pythonanywhere.com/');
+
+        socket.on('start_call', function(data) {
+            document.getElementById('callStatus').innerHTML = data.message;
+        });
+    </script>
+</body>
+</html>
